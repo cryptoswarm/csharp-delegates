@@ -28,7 +28,7 @@ void Run()
 {
     AddItemsToShoppingCart();
 
-    Console.WriteLine($"The total for the cart is {shoppingCart.GetCartTotal():C2}");
+    Console.WriteLine($"The total for the cart is {shoppingCart.GetCartTotal(DisplaySubTotal):C2}");
 
     Console.WriteLine();
     Console.Write("Press any key to exit...");
@@ -42,4 +42,9 @@ void AddItemsToShoppingCart()
     shoppingCart.AddItems(new Product { ItemName = "Butter", Price = 4.99M });
     shoppingCart.AddItems(new Product { ItemName = "Bread", Price = 3.75M });
     shoppingCart.AddItems(new Product { ItemName = "Olive Oil", Price = 12.68M });
+}
+
+void DisplaySubTotal(decimal subTotal)
+{
+    Console.WriteLine($"Your cart subtotal before discount {subTotal:C2}");
 }

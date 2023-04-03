@@ -4,9 +4,13 @@
     {
         private IEnumerable<Product> Items = new List<Product>();
 
-        public decimal GetCartTotal()
+        public delegate void GetDiscount(decimal subtotal);
+
+        public decimal GetCartTotal(GetDiscount getDiscount)
         {
             decimal subTotal = Items.Sum(_ => _.Price);
+
+            getDiscount(subTotal);
 
             switch (subTotal)
             {
