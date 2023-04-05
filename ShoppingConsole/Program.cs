@@ -28,7 +28,20 @@ void Run()
 {
     AddItemsToShoppingCart();
 
-    Console.WriteLine($"The total for the cart is {shoppingCart.GetCartTotal(DisplaySubTotal, CalculateLevelDiscount, NotifyCustomer):C2}");
+    Console.WriteLine("Carte 1 -------");
+    Console.WriteLine($"Total is {shoppingCart.GetCartTotal(DisplaySubTotal, CalculateLevelDiscount, NotifyCustomer):C2}");
+
+    Console.WriteLine("Carte 2 ------");
+    decimal total = shoppingCart.GetCartTotal((subTotal) => Console.WriteLine($"Subtotal before discount {subTotal:C2}"),
+                                                (products, subTotal) =>
+                                                {
+                                                    if (products.Count() > 3) { return subTotal * 0.5M; }
+                                                    else return subTotal;
+                                                },
+                                                (message) => Console.WriteLine($"Alert: {message}")
+                                             );
+
+    Console.WriteLine($"Total is :{total:C2}");
 
     Console.WriteLine();
     Console.Write("Press any key to exit...");
@@ -46,7 +59,7 @@ void AddItemsToShoppingCart()
 
 void DisplaySubTotal(decimal subTotal)
 {
-    Console.WriteLine($"Your cart subtotal before discount {subTotal:C2}");
+    Console.WriteLine($"Subtotal before discount {subTotal:C2}");
 }
 
 decimal CalculateLevelDiscount(IEnumerable<Product> items, decimal subTotal )
@@ -66,5 +79,5 @@ decimal CalculateLevelDiscount(IEnumerable<Product> items, decimal subTotal )
 
 void NotifyCustomer(string message)
 {
-    Console.WriteLine(message);
+    Console.WriteLine($"Alert: {message}");
 }
