@@ -6,23 +6,17 @@
 
         public delegate void GetDiscount(decimal subtotal);
 
-        public decimal GetCartTotal(GetDiscount getDiscount)
+        public decimal GetCartTotal(GetDiscount getSubTotal, 
+                                    Func<IEnumerable<Product>, decimal, decimal> getDiscountedTotal, // list of product, subtotal and finally result
+                                    Action<string> notifyCustomer) 
         {
             decimal subTotal = Items.Sum(_ => _.Price);
 
-            getDiscount(subTotal);
+            getSubTotal(subTotal);
 
-            switch (subTotal)
-            {
-                case > 100:
-                    return subTotal * 0.80M;
-                case > 50:
-                    return subTotal * 0.85M;
-                case > 10:
-                    return subTotal * 0.90M;
-                default:
-                    return subTotal;
-            }
+            notifyCustomer("Applying your discount."); // simulate logging
+
+            return getDiscountedTotal(Items, subTotal);
         }
 
         public void AddItems(Product product)
